@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<!-- saved from url=(0042)file:///C:/Users/Jana52/Desktop/index.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    <title>Shape Calculator</title>
+</head>
+<body>
+    <h1>Shape Calculator</h1>
+    
+    <form>
+        <!-- Shape selection -->
+        <label for="shape">Choose your shape:</label>
+        <select name="shape" id="shape">
+            <option value="square">Square</option>
+            <option value="triangle">Triangle</option>
+            <option value="trapezoid">Trapezoid</option>
+        </select>
+        <br><br>
+        
+        <!-- Input fields based on shape selection -->
+        <div id="square-fields" style="display: block;">
+            <label for="square_side">Enter side length of the square (cm):</label>
+            <input type="number" step="0.01" name="square_side" id="square_side">
+            <br><br>
+        </div>
+        
+        <div id="triangle-fields" style="display: none;">
+            <label for="triangle_a">Enter side length 1 of the triangle (cm):</label>
+            <input type="number" step="0.01" name="triangle_a" id="triangle_a">
+            <br><br>
+            <label for="triangle_b">Enter side length 2 of the triangle (cm):</label>
+            <input type="number" step="0.01" name="triangle_b" id="triangle_b">
+            <br><br>
+            <label for="triangle_k">Enter side length 3 of the triangle (cm):</label>
+            <input type="number" step="0.01" name="triangle_k" id="triangle_k">
+            <br><br>
+        </div>
+        
+        <div id="trapezoid-fields" style="display: none;">
+            <label for="trapezoid_b">Enter base length 1 of the trapezoid (cm):</label>
+            <input type="number" step="0.01" name="trapezoid_b" id="trapezoid_b">
+            <br><br>
+            <label for="trapezoid_d">Enter base length 2 of the trapezoid (cm):</label>
+            <input type="number" step="0.01" name="trapezoid_d" id="trapezoid_d">
+            <br><br>
+            <label for="trapezoid_a">Enter side length 1 of the trapezoid (cm):</label>
+            <input type="number" step="0.01" name="trapezoid_a" id="trapezoid_a">
+            <br><br>
+            <label for="trapezoid_c">Enter side length 2 of the trapezoid (cm):</label>
+            <input type="number" step="0.01" name="trapezoid_c" id="trapezoid_c">
+            <br><br>
+        </div>
+        
+        <input type="button" value="Calculate" onclick="calculate()">
+    </form>
+    
+    <!-- Results section -->
+    <div id="results" style="display: block;">
+        <h2>Results:</h2>
+        <p id="area">Area: NaN sq. cm</p>
+        <p id="perimeter">Perimeter: NaN cm</p>
+    </div>
+
+    <script>
+        function calculate() {
+            var shape = document.getElementById('shape').value;
+            var resultsDiv = document.getElementById('results');
+            
+            // Reset results
+            document.getElementById('area').textContent = 'Area: ';
+            document.getElementById('perimeter').textContent = 'Perimeter: ';
+            
+            if (shape === 'square') {
+                var side = parseFloat(document.getElementById('square_side').value);
+                var area = side * side;
+                var perimeter = 4 * side;
+                document.getElementById('area').textContent += area + ' sq. cm';
+                document.getElementById('perimeter').textContent += perimeter + ' cm';
+            } else if (shape === 'triangle') {
+                var a = parseFloat(document.getElementById('triangle_a').value);
+                var b = parseFloat(document.getElementById('triangle_b').value);
+                var k = parseFloat(document.getElementById('triangle_k').value);
+                var s = (a + b + k) / 2; // Semi-perimeter
+                var area = Math.sqrt(s * (s - a) * (s - b) * (s - k));
+                var perimeter = a + b + k;
+                document.getElementById('area').textContent += area + ' sq. cm';
+                document.getElementById('perimeter').textContent += perimeter + ' cm';
+            } else if (shape === 'trapezoid') {
+                var b1 = parseFloat(document.getElementById('trapezoid_b').value);
+                var b2 = parseFloat(document.getElementById('trapezoid_d').value);
+                var a1 = parseFloat(document.getElementById('trapezoid_a').value);
+                var a2 = parseFloat(document.getElementById('trapezoid_c').value);
+                var height = Math.sqrt(Math.pow((b2 - b1 + a2 - a1) / 2, 2) + Math.pow(a1, 2));
+                var area = ((b1 + b2) / 2) * height;
+                var perimeter = a1 + a2 + b1 + b2;
+                document.getElementById('area').textContent += area + ' sq. cm';
+                document.getElementById('perimeter').textContent += perimeter + ' cm';
+            }
+            
+            // Show results
+            resultsDiv.style.display = 'block';
+        }
+
+        // Show/hide input fields based on shape selection
+        document.getElementById('shape').addEventListener('change', function() {
+            var shape = this.value;
+            document.getElementById('square-fields').style.display = (shape === 'square') ? 'block' : 'none';
+            document.getElementById('triangle-fields').style.display = (shape === 'triangle') ? 'block' : 'none';
+            document.getElementById('trapezoid-fields').style.display = (shape === 'trapezoid') ? 'block' : 'none';
+            
+            // Hide results when changing shape
+            document.getElementById('results').style.display = 'none';
+        });
+    </script>
+
+
+</body></html>
